@@ -1,11 +1,16 @@
--- Licensed to the public under the Apache License 2.0.
-
 module("luci.controller.qbittorrent",package.seeall)
 
 function index()
-	if not nixio.fs.access("/etc/config/qbittorrent") then
-		return
-	end
+  if not nixio.fs.access("/etc/config/qbittorrent")then
+    return
+  end
+  entry({"admin","nas","qBittorrent"},cbi("qbittorrent"),_("qBittorrent"))
+  entry({"admin","nas","qBittorrent","status"},call("act_status")).leaf=true
+end
 
-	entry({"admin", "services", "qbittorrent"}, view("qbittorrent/qbittorrent"), _("qBittorrent")).acl_depends = { "luci-app-qbittorrent" }
+function act_status()
+  local e={}
+  e.running=luci.sys.call("pgrep qbittorrent-nox >/dev/null")==0
+  luci.http.prepare_content("application/json")
+  luci.http.write_json(e)
 end

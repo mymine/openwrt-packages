@@ -10,7 +10,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/arvidn/libtorrent/releases/download/libtorrent-$(PKG_VERSION)
-PKG_HASH:=d0dd30bdc3926587c4241f4068d8e39628a6c1f9f6cf53195f0e9bc90017befb
+PKG_HASH:=skip
 
 PKG_LICENSE:=BSL-1.0
 PKG_LICENSE_FILES:=LICENSE
@@ -41,7 +41,7 @@ define Package/$(PKG_NAME)/description
   deployment. It is configurable to be able to fit both servers and embedded devices.
 endef
 
-TARGET_CFLAGS += $(FPIC) -std=c++14 -ffunction-sections -fdata-sections
+TARGET_CFLAGS += $(if $(CONFIG_SOFT_FLOAT),-DBOOST_NO_FENV_H) $(FPIC) -std=c++14 -ffunction-sections -fdata-sections
 TARGET_LDFLAGS += -Wl,--gc-sections,--as-needed
 
 CONFIGURE_ARGS += \
@@ -51,7 +51,7 @@ CONFIGURE_ARGS += \
 	--disable-rpath \
 	--enable-logging=no \
 	--enable-encryption \
-	--disable-deprecated-functions \
+	--enable-deprecated-functions \
 	--with-gnu-ld \
 	--with-boost=$(STAGING_DIR)/usr \
 	--with-libiconv \

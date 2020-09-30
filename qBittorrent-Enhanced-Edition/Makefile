@@ -1,12 +1,18 @@
+#
+# Copyright (C) 2017-2020
+#
+# This is free software, licensed under the GNU General Public License v2.
+#
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=qBittorrent-Enhanced-Edition
-PKG_VERSION:=4.2.5.13
+PKG_VERSION:=4.2.5.16
 PKG_RELEASE=1
 
 PKG_SOURCE:=$(PKG_NAME)-release-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/c0re100/qBittorrent-Enhanced-Edition/tar.gz/release-$(PKG_VERSION)?
-PKG_HASH:=e032ea5b7e8d974081c12201f20f06e47bc959a72d5898561736cdfdf46cafaf
+PKG_HASH:=skip
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/qBittorrent-Enhanced-Edition-release-$(PKG_VERSION)
 
@@ -22,20 +28,28 @@ PKG_USE_MIPS16:=0
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  SUBMENU:=BitTorrent
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=bittorrent client programmed in C++ / Qt
-  URL:=https://github.com/c0re100/qBittorrent-Enhanced-Edition
-  DEPENDS:=+libstdcpp +libopenssl +zlib +qt5-core +qt5-network +qt5-xml +libtorrent-rasterbar +python3
+	SECTION:=net
+	CATEGORY:=Network
+	SUBMENU:=BitTorrent
+	DEPENDS:=+libstdcpp \
+		+libtorrent-rasterbar \
+		+libopenssl \
+		+qt5-core \
+		+qt5-network \
+		+qt5-xml \
+		+zlib \
+		+python3
+	TITLE:=bittorrent client programmed in C++ / Qt
+	URL:=https://www.qbittorrent.org/
+	PROVIDES:=qBittorrent
 endef
 
 define Package/$(PKG_NAME)/description
-qBittorrent is a bittorrent client programmed in C++ / Qt that uses 
-libtorrent (sometimes called libtorrent-rasterbar) by Arvid Norberg.
-It aims to be a good alternative to all other bittorrent clients out 
-there. qBittorrent is fast, stable and provides unicode support as 
-well as many features.
+  qBittorrent is a bittorrent client programmed in C++ / Qt that uses
+  libtorrent (sometimes called libtorrent-rasterbar) by Arvid Norberg.
+  It aims to be a good alternative to all other bittorrent clients out
+  there. qBittorrent is fast, stable and provides unicode support as
+  well as many features.
 endef
 
 CONFIGURE_VARS += \
@@ -51,12 +65,15 @@ CONFIGURE_ARGS += \
 MAKE_VARS += \
 	INSTALL_ROOT="$(PKG_INSTALL_DIR)"
 
+TARGET_CFLAGS += -std=c++14 -ffunction-sections -fdata-sections -flto
+TARGET_LDFLAGS += -Wl,--gc-sections,--as-needed
+
 define Build/Prepare
 	$(call Build/Prepare/Default)
 	$(SED) '/<context>/{:a;N;/<\/context>/!ba;/\/gui\//d}' `ls $(PKG_BUILD_DIR)/src/lang/qbittorrent_*.ts`
 endef
 
-define Package/qbittorrent/conffiles
+define Package/$(PKG_NAME)/conffiles
 /etc/config/qbittorrent
 endef
 

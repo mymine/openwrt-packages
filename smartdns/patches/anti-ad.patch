@@ -11,15 +11,14 @@ diff --git a/package/openwrt/files/etc/init.d/smartdns b/package/openwrt/files/e
 index 2bf799e..e48b587 100644
 --- a/package/openwrt/files/etc/init.d/smartdns
 +++ b/package/openwrt/files/etc/init.d/smartdns
-@@ -297,6 +297,13 @@ load_service()
+@@ -297,6 +297,12 @@ load_service()
  	config_get serve_expired "$section" "serve_expired" "0"
  	[ "$serve_expired" = "1" ] && conf_append "serve-expired" "yes"
  
 +	config_get anti_ad "$section" "anti_ad" "0"
 +	[ "$anti_ad" = "1" ] && {
-+	conf_append "conf-file" "/etc/smartdns/anti-ad-smartdns.conf"
-+	wget -O /etc/smartdns/anti-ad-smartdns.conf https://anti-ad.net/anti-ad-for-smartdns.conf
-+	echo "0 0 */2 * * wget -O /etc/smartdns/anti-ad-smartdns.conf https://anti-ad.net/anti-ad-for-smartdns.conf" >> /etc/crontabs/root
++	wget -O $SMARTDNS_VAR_CONF_DIR/anti-ad-smartdns.conf https://anti-ad.net/anti-ad-for-smartdns.conf
++	conf_append "conf-file" "$SMARTDNS_VAR_CONF_DIR/anti-ad-smartdns.conf"
 +	}
 +
  	SMARTDNS_PORT="$port"

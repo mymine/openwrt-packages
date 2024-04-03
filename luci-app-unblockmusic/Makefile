@@ -36,6 +36,6 @@ define Package/$(PKG_NAME)/conffiles
 /etc/config/unblockmusic
 endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

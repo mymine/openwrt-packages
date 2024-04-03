@@ -5,13 +5,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=daed
-PKG_RELEASE:=51
+PKG_RELEASE:=52
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/daeuniverse/daed.git
 PKG_SOURCE_DATE:=2024-03-27
 PKG_SOURCE_VERSION:=2841ec229ff3a0675293b95a23f0f3aac2604982
-PKG_MIRROR_HASH:=skip
+PKG_MIRROR_HASH:=8ad724b263ca49024dae8cd4272258df765c2ae01b6d83c9c2a11af674c6ca32
 
 PKG_LICENSE:=AGPL-3.0-only MIT
 PKG_LICENSE_FILES:=LICENSE wing/LICENSE
@@ -32,7 +32,7 @@ GO_PKG_TAGS:=embedallowed
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/bpf.mk
-include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
+include ../../lang/golang/golang-package.mk
 
 TAR_CMD=$(HOST_TAR) -C $(BUILD_DIR)/ $(TAR_OPTIONS)
 
@@ -80,7 +80,7 @@ WEB_FILE:=$(PKG_NAME)-web-$(PKG_VERSION).zip
 define Download/daed-web
 	URL:=https://mirror2.immortalwrt.org/sources
 	FILE:=$(WEB_FILE)
-	HASH:=skip
+	HASH:=dee10f5c646cddb47b0ef1e377a956b7d4841dc90931ab720299f73da705f10b
 endef
 
 define Build/Prepare

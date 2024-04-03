@@ -6,18 +6,18 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=gallery-dl
 PKG_VERSION:=1.25.8
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
 PYPI_NAME:=gallery_dl
-PKG_HASH:=skip
+PKG_HASH:=eaad85f73486669d2266806f39422e204a8db3dee16ec6f3136dd72724d95037
 
 PKG_LICENSE:=GPL-2.0-only
 PKG_LICENSE_FILES:=LICENSE
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
-include $(TOPDIR)/feeds/packages/lang/python/pypi.mk
+include ../../lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
-include $(TOPDIR)/feeds/packages/lang/python/python3-package.mk
+include ../../lang/python/python3-package.mk
 
 define Package/gallery-dl
   SECTION:=multimedia
@@ -25,7 +25,7 @@ define Package/gallery-dl
   TITLE:=Command-line program to download image galleries and collections
   URL:=https://github.com/mikf/gallery-dl
   DEPENDS:= \
-    +ca-bundle \
+    +ca-certificates \
     +python3 \
     +python3-codecs \
     +python3-ctypes \

@@ -9,11 +9,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=srelay
 PKG_VERSION:=0.4.8p3
-PKG_RELEASE:=11
+PKG_RELEASE:=12
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=@SF/socks-relay
-PKG_MD5SUM:=skip
+PKG_MD5SUM:=8121ff3d1b741de95dd6eacc5ad5811c
 
 include $(INCLUDE_DIR)/package.mk
 

@@ -5,6 +5,6 @@ include $(TOPDIR)/rules.mk
 LUCI_TITLE:=LuCI Support for Watchcat
 LUCI_DEPENDS:=+watchcat
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -11,13 +11,13 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=fullconenat-nft
-PKG_RELEASE:=5
+PKG_RELEASE:=6
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/fullcone-nat-nftables/nft-fullcone.git
 PKG_SOURCE_DATE:=2023-05-17
 PKG_SOURCE_VERSION:=07d93b626ce5ea885cd16f9ab07fac3213c355d9
-PKG_MIRROR_HASH:=skip
+PKG_MIRROR_HASH:=b2aeb9b804a020504e5a36e0700caf1c860027afb8ffa834573196d96c350598
 
 PKG_LICENSE:=GPL-2.0-only
 PKG_LICENSE_FILES:=LICENSE

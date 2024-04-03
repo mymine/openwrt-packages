@@ -2,11 +2,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ethstatus
 PKG_VERSION:=0.4.9
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)_$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=http://deb.debian.org/debian/pool/main/e/ethstatus/
-PKG_HASH:=skip
+PKG_HASH:=4a85051f9d704c88e770577f18caaf4b97583e622a919dfdc87e0bd6b8166722
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 

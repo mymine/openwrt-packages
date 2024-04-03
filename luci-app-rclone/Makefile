@@ -29,6 +29,6 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_rclone-ng
 	default y
 endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -11,6 +11,6 @@ LUCI_DEPENDS:=+p910nd +kmod-usb-printer
 
 PKG_NAME:=luci-app-usb-printer
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

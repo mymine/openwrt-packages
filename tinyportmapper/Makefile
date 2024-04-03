@@ -9,11 +9,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tinyPortMapper
 PKG_VERSION:=20200818.0
-PKG_RELEASE:=12
+PKG_RELEASE:=13
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/wangyu-/tinyPortMapper/tar.gz/$(PKG_VERSION)?
-PKG_HASH:=skip
+PKG_HASH:=094aef3fa0646fe3d0418f87767c1dd24ba1a80518f1e8a7cae2783aed88e732
 
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=Yu Wang

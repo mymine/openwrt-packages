@@ -2,12 +2,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=homebox
 PKG_VERSION:=0.0.0-dev.2020062901
-PKG_RELEASE:=16
+PKG_RELEASE:=17
 
 PKG_SOURCE_URL_FILE:=v$(PKG_VERSION).tar.gz
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/XGHeaven/homebox/archive/refs/tags/
-PKG_HASH:=skip
+PKG_HASH:=815a2a0fc5458245769648ef5b394f69fdec2573a1403b789146be0c4217a443
 
 PKG_BUILD_DEPENDS:=golang/host homebox/host
 PKG_BUILD_PARALLEL:=1

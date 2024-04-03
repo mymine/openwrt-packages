@@ -10,6 +10,6 @@ LUCI_TITLE:=luci-app-cifs
 LUCI_DEPENDS:=+kmod-fs-cifs +kmod-nls-utf8 +kmod-nls-base +kmod-crypto-hmac +kmod-crypto-md5 +kmod-crypto-misc +cifsmount
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

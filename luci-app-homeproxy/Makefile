@@ -21,6 +21,6 @@ define Package/luci-app-homeproxy/conffiles
 /etc/homeproxy/cache.db
 endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

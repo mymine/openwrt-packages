@@ -13,7 +13,7 @@ LUCI_TITLE=Luci Application for IPSec VPN (Libreswan)
 LUCI_DEPENDS:=+luci-base +libreswan
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 

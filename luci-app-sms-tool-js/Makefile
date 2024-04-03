@@ -20,6 +20,6 @@ define Package/luci-app-sms-tool-js/conffiles
 /etc/modem/ussdcodes.user
 endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

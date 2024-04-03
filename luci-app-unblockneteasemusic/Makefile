@@ -21,6 +21,6 @@ define Package/luci-app-unblockneteasemusic/conffiles
 /usr/share/unblockneteasemusic/server.key
 endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -12,6 +12,6 @@ LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-airplay2
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

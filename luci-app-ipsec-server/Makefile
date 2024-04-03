@@ -17,6 +17,6 @@ define Package/$(PKG_NAME)/conffiles
 /etc/config/luci-app-ipsec-server
 endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

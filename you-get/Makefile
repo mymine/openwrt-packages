@@ -6,18 +6,18 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=you-get
 PKG_VERSION:=0.4.1650
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PYPI_NAME:=you-get
-PKG_HASH:=skip
+PKG_HASH:=b3c944cf7a63cc468cccc8816dce7fc008c2e6b5ba52aefe5ce2081818a3ad47
 
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
 
-include $(TOPDIR)/feeds/packages/lang/python/pypi.mk
+include ../../lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
-include $(TOPDIR)/feeds/packages/lang/python/python3-package.mk
+include ../../lang/python/python3-package.mk
 
 define Package/you-get
   SECTION:=multimedia
@@ -25,7 +25,7 @@ define Package/you-get
   TITLE:=Dumb downloader that scrapes the web
   URL:=https://you-get.org
   DEPENDS:= \
-    +ca-bundle \
+    +ca-certificates \
     +ffmpeg \
     +python3 \
     +python3-email \

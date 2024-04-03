@@ -5,7 +5,7 @@ include $(INCLUDE_DIR)/package.mk
 
 PKG_NAME:=shadow-tls
 PKG_VERSION:=0.2.23
-PKG_RELEASE:=5
+PKG_RELEASE:=6
 
 PKG_LICENSE_FILES:=LICENSE
 PKG_MAINTAINER:=FluffyTigerFear
@@ -13,29 +13,29 @@ RELEASE_HEAD:=$(PKG_NAME)
 RELEASE_FOOT:=unknown-linux-musl
 ifeq ($(ARCH),aarch64)
 	RELEASE_ARCH:=$(RELEASE_HEAD)-aarch64-$(RELEASE_FOOT)
-	PKG_HASH:=skip
+	PKG_HASH:=62081cdb011bcf82064c0f3313ee581df536914106108b137efdc5014c207b5b
 else ifeq ($(ARCH),arm)
 	ARM_CPU_FEATURES:=$(word 2,$(subst +,$(space),$(call qstrip,$(CONFIG_CPU_TYPE))))
 	ifeq ($(ARM_CPU_FEATURES),)
 		RELEASE_ARCH:=$(RELEASE_HEAD)-armv7-$(RELEASE_FOOT)eabi
-		PKG_HASH:=skip
+		PKG_HASH:=eb1346ec83e154f2722ab671fbcdd1c95739b4a7c29655effae9cd4ffe8d23b6
 	else
 		RELEASE_ARCH:=$(RELEASE_HEAD)-armv7-$(RELEASE_FOOT)eabihf
-		PKG_HASH:=skip
+		PKG_HASH:=be005c23a4d5c51d52f2a96f1f060734dd43b80a7912516c130d433d04c7dfa1
 	endif
 else ifeq ($(ARCH),x86_64)
 	RELEASE_ARCH:=$(RELEASE_HEAD)-x86_64-$(RELEASE_FOOT)
-	PKG_HASH:=skip
+	PKG_HASH:=acc7296e50cf310a15fca5756efa5f721ffc62dd0e4dd16581bc229b21b4b549
 else
 	PKG_SOURCE:=dummy
-	PKG_HASH:=skip
+	PKG_HASH:=dummy
 endif
 
 define Download/shadow-tls
 	URL:=https://github.com/ihciah/shadow-tls/releases/download/v$(PKG_VERSION)
 	URL_FILE:=$(RELEASE_ARCH)
 	FILE:=$(RELEASE_ARCH)
-	HASH:=skip
+	HASH:=$(PKG_HASH)
 endef
 
 define Package/shadow-tls

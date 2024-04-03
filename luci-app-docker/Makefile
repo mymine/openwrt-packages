@@ -7,11 +7,11 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=Luci for Docker-CE
-LUCI_DEPENDS:=+dockerd +docker +dockerd +e2fsprogs +fdisk
+LUCI_DEPENDS:=+dockerd +docker +e2fsprogs +fdisk
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-docker
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -2,11 +2,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=uwsgi
 PKG_VERSION:=2.0.21
-PKG_RELEASE:=10
+PKG_RELEASE:=11
 
 PYPI_NAME:=uWSGI
 PYPI_SOURCE_NAME:=uwsgi
-PKG_HASH:=skip
+PKG_HASH:=35a30d83791329429bc04fe44183ce4ab512fcf6968070a7bfba42fc5a0552a9
 
 PKG_LICENSE:=GPL-2.0-or-later
 PKG_LICENSE_FILES:=LICENSE
@@ -22,9 +22,9 @@ PKG_CONFIG_DEPENDS:= \
 	CONFIG_PACKAGE_uwsgi-python3-plugin \
 	CONFIG_PACKAGE_uwsgi-luci-support
 
-include $(TOPDIR)/feeds/packages/lang/python/pypi.mk
+include ../../lang/python/pypi.mk
 include $(INCLUDE_DIR)/package.mk
-include $(TOPDIR)/feeds/packages/lang/python/python3-package.mk
+include ../../lang/python/python3-package.mk
 #for LINUX_UNAME_VERSION:
 include $(INCLUDE_DIR)/kernel.mk
 

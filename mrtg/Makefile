@@ -10,11 +10,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mrtg
 PKG_VERSION:=2.17.10
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://oss.oetiker.ch/mrtg/pub/
-PKG_MD5SUM:=skip
+PKG_MD5SUM:=ab1c14acc9af4221f459707339f361b3
 
 PKG_INSTALL:=1
 PKG_FIXUP:=autoreconf

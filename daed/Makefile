@@ -78,7 +78,7 @@ endef
 
 WEB_FILE:=$(PKG_NAME)-web-$(PKG_VERSION).zip
 define Download/daed-web
-	URL:=@IMMORTALWRT
+	URL:=https://mirror2.immortalwrt.org/sources
 	FILE:=$(WEB_FILE)
 	HASH:=skip
 endef

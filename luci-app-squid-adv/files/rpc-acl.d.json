@@ -4,19 +4,27 @@
 		"read": {
 			"ubus": {
 				"luci.squid-adv": [
+					"cert_info",
 					"reconfigure",
 					"generate",
-					"cert_valid",
+					"ip_info",
 				]
 			},
 			"uci": [
 				"squid",
 			],
+			"file": {
+				"/usr/libexec/rpcd/luci.squid-adv config read": [ "exec" ],
+			},
 		},
 		"write": {
 			"uci": [
 				"squid",
-			]
+			],
+			"file": {
+				"/tmp/luci-app-squid-adv.data": [ "write" ],
+				"/usr/libexec/rpcd/luci.squid-adv config move": [ "exec" ],
+			},
 		}
 	}
 }

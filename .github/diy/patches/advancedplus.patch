@@ -89,14 +89,21 @@
  }
  advancedset(){
  dev=`ifconfig | grep "Point-to-Point" | cut -d " " -f1`
-@@ -233,8 +244,10 @@ tsoset
+@@ -222,8 +233,6 @@ dev=`ifconfig | grep "Point-to-Point" | cut -d " " -f1`
+ setnetwizard
+ sethttps
+ dhcp_domain
+-set_ttyd
+-set_firewall_wan
+ tsoset
+     [ "x$(uci -q get advancedplus.@basic[0].qos)" = "x1" ] && \usr\bin\qoshome
+     if [ "x$(uci -q get advancedplus.@basic[0].ttl)" = "x1" ] ; then
+@@ -233,8 +242,6 @@ tsoset
      fi
      #cpumode=`uci -q get advancedplus.@basic[0].cpumode`
      #[ ! $cpumode ] || cpumodeset $cpumode   /usr/bin/zsh
-+    if [ "$(which zsh)" ]; then
-     sed -i "\/bin\/zsh/d" /etc/profile
-     [ "x$(uci -q get advancedplus.@basic[0].usshmenu)" = "x1" ] || echo '/usr/bin/zsh'  >> /etc/profile
-+    fi
+-    sed -i "\/bin\/zsh/d" /etc/profile
+-    [ "x$(uci -q get advancedplus.@basic[0].usshmenu)" = "x1" ] || echo '/usr/bin/zsh'  >> /etc/profile
      uci commit netwizard 
  }
  
@@ -125,17 +132,24 @@
 
 --- a/luci-app-advancedplus/luasrc/model/cbi/advancedplus/advancedset.lua
 +++ b/luci-app-advancedplus/luasrc/model/cbi/advancedplus/advancedset.lua
-@@ -24,11 +24,9 @@ ul:depends("qos", true)
+@@ -24,8 +24,6 @@ ul:depends("qos", true)
  
  e = t:option(Flag, "uhttps",translate('Accessing using HTTPS'), translate('Open the address in the background and use HTTPS for secure access'))
  
-+if fs.access('/usr/bin/zsh') then
- e = t:option(Flag, "usshmenu",translate('No backend menu required'), translate('OPENWRT backend and SSH login do not display shortcut menus'))
+-e = t:option(Flag, "usshmenu",translate('No backend menu required'), translate('OPENWRT backend and SSH login do not display shortcut menus'))
 -
--e = t:option(Flag, "wizard",translate('Hide Wizard'), translate('Show or hide the setup wizard menu'))
--e.default = "0"
--e.rmempty = false
-+end
- 
- e = t:option(Flag, "tsoset",translate('TSO optimization for network card interruption'), translate('Turn off the TSO parameters of the INTEL225 network card to improve network interruption'))
+ e = t:option(Flag, "wizard",translate('Hide Wizard'), translate('Show or hide the setup wizard menu'))
+ e.default = "0"
+ e.rmempty = false
+@@ -34,12 +32,6 @@ e = t:option(Flag, "tsoset",translate('TSO optimization for network card interru
  e.default = "1"
+ e.rmempty = false
+ 
+-e = t:option(Flag, "set_ttyd",translate('Allow TTYD external network access'))
+-e.default = "0"
+-
+-e = t:option(Flag, "set_firewall_wan",translate('Set firewall wan to open'))
+-e.default = "0"
+-
+ e = t:option(Flag, "dhcp_domain",translate('Add Android host name mapping'), translate('Resolve the issue of Android native TV not being able to connect to WiFi for the first time'))
+ e.default = "0"

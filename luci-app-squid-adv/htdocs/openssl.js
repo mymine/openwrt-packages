@@ -9,68 +9,125 @@
 return view.extend({
 	cert_valid: rpc.declare({
 		object: 'luci.squid-adv',
-		method: 'cert_valid',
+		method: 'cert_info',
+	}),
+	get_ipinfo: rpc.declare({
+		object: 'luci.squid-adv',
+		method: 'ip_info',
+	}),
+	generate: rpc.declare({
+		object: 'luci.squid-adv',
+		method: 'generate',
+		params: [ 'bits', 'days', 'country', 'state', 'locality', 'organization' ],
 	}),
 
 	// Loading function:
-    load: function () {
-        return Promise.all([
-            this.cert_valid(),
-        ]);
-    },
+	load: function () {
+		return Promise.all([
+			this.cert_valid(),
+		]);
+	},
 
 	// Rendering function:
 	render: function(data) {
 		var s, o, m, t;
-		m = new form.Map('squid', _('Squid Proxy Settings')); 
+		m = new form.Map('squid', _('OpenSSL Certificate'));
+		this.valid = data[0].valid;
 
-		s = m.section(form.TypedSection, 'squid');
+		if (this.valid) {
+			s = m.section(form.TypedSection, 'squid', _("Certificate Valid Period"));
+			s.anonymous = true;
+
+			o = s.option(form.Value, "_notBefore", _("Current Certificate Valid Starting:"))
+			o.cfgvalue = function() { return data[0].notBefore != undefined ? data[0].notBefore : 'Invalid'; }
+			o.write = null;
+			o.readonly = true;
+
+			o = s.option(form.Value, "_notAfter", _("Current Certificate Not Valid After:"))
+			o.cfgvalue = function() { return data[0].notAfter != undefined ? data[0].notAfter : 'Invalid'; }
+			o.write = null;
+			o.readonly = true;
+		}
+
+		s = m.section(form.TypedSection, 'squid', _("Certificate Settings"));
 		s.anonymous = true;
 
-		o = s.option(form.Value, "_notBefore", translate("Current Certificate Not Valid Before:"))
-		o.cfgvalue = function() { return data[0].notBefore; }
+		o = s.option(form.ListValue, "bits", _("RSA Key Bit Size:"))
+		o.value("4096", "4096 bits (" + _("Best") + ")")
+		o.value("2048", "2048 bits (" + _("Better") + ")")
+		o.value("1024", "1024 bits (" + _("Not Recommended") + ")")
+		o.value("512", "512 bits (" + _("Not Recommended") + ")")
 		o.write = null;
-		o.readonly = true;
+		o.rmempty = false
+		o.cfgvalue = function() { return data[0].bits != undefined ? data[0].bits : '4096'; }
 
-		o = s.option(form.Value, "_notAfter", translate("Current Certificate Not Valid After:"))
-		o.cfgvalue = function() { return data[0].notAfter; }
+		o = s.option(form.Value, "days", _("Days The Certificate Is Good For:"))
+		o.default = "3650"
+		o.datatype = 'integer';
+		o.cfgvalue = function() { if (data[0].days != undefined) { return data[0].days; } }
 		o.write = null;
-		o.readonly = true;
+		o.validate = function(section_id, value) { return value > 0 ? true : _("Number of days cannot be negative!"); }
 
-		//-- generate = s:taboption("openssl", Button, "", "Generate Certificates")
+		o = s.option(form.Value, "countryName", _("Country Name:"))
+		o.cfgvalue = function() { return data[0].countryName != undefined ? data[0].countryName : 'XX'; }
+		o.write = null;
+		o.validate = function(section_id, value) { return value.length == 2 ? true : _("Must be a two-letter country code!"); }
 
-/*-- OpenSSL Configuration
+		o = s.option(form.Value, "stateOrProvinceName", _("State Or Province Name:"))
+		o.cfgvalue = function() { return data[0].stateOrProvinceName != undefined ? data[0].stateOrProvinceName : 'Unspecified'; }
+		o.write = null;
 
-s:taboption("openssl", DummyValue, '', '').template = "squid/openssl-config"
+		o = s.option(form.Value, "localityName", _("Locality Name:"))
+		o.default = data[0].localityName != undefined ? data[0].localityName : 'Unspecified';
+		o.cfgvalue = function() { return null; }
+		o.write = null;
 
-bits= s:taboption("openssl", ListValue, "openssl_rsa_key_bits", translate("RSA Key Bit Size:"))
-bits:value("4096", "4096 bits (" .. translate("Best") .. ")")
-bits:value("2048", "2048 bits (" .. translate("Better") .. ")")
-bits:value("1024", "1024 bits (" .. translate("Not Recommended") .. ")")
-bits:value("512", "512 bits (" .. translate("Not Recommended") .. ")")
-bits.rmempty = false
-bits.default = "4096"
-
-s:taboption("openssl", Value, "openssl_days", translate("Days The Certificate Is Good For:")).default = "3650"
-
-s:taboption("openssl", Value, "openssl_countryName", translate("Country Name:")).default = "US"
-
-s:taboption("openssl", Value, "openssl_stateOrProvinceName", translate("State Or Province Name:")).default = "Unspecified"
-
-s:taboption("openssl", Value, "openssl_localityName", translate("Locality Name:")).default = "Unspecified"
-
-s:taboption("openssl", Value, "openssl_organizationName", translate("Organization Name:")).default = "OpenWrt Router"
-
-		o = s.option(form.Value, 'http_port', _('Regular Squid Proxy Port'));
-		o.validate = this.validate_ip;
-
-		o = s.option(form.Value, "visible_hostname", _("Visible Hostname"))
-		o.placeholder = "OpenWrt"
-
-		o = s.option(form.Value, "coredump_dir", _("Coredump files directory"))
-		o.placeholder = "/tmp/squid"
-*/
+		o = s.option(form.Value, "organizationName", _("Organization Name:"))
+		o.cfgvalue = function() { return data[0].organizationName != undefined ? data[0].organizationName : 'OpenWrt Router'; }
+		o.write = null;
 
 		return m.render();
+	},
+
+	regenerate_cert: function() {
+		if (confirm( _("Regenerating the certificate will overwrite the current OpenSSL certificate, and will require installing the new certificate on all devices.\n\nAre you SURE you want to do this?") )) {
+			return this.generate_cert();
+		}
+	},
+
+	generate_cert: function() {
+		// Gather information:
+		var bits = document.getElementById("widget.cbid.squid.squid.bits").value;
+		var days = document.getElementById("widget.cbid.squid.squid.days").value;
+		var country = document.getElementById("widget.cbid.squid.squid.countryName").value;
+		var state = document.getElementById("widget.cbid.squid.squid.stateOrProvinceName").value;
+		var locality = document.getElementById("widget.cbid.squid.squid.localityName").value;
+		var organization = document.getElementById("widget.cbid.squid.squid.organizationName").value;
+
+		// Create a promise for the OpenSSL Certificate Generation task:
+		var tasks = [
+			this.generate( bits, days, country, state, locality, organization ),
+		];
+		return Promise.all(tasks).then(function() {
+			classes.ui.changes.apply(false);
+		});
+	},
+
+	populate: function() {
+		return Promise.all([ this.get_ipinfo() ]).then(function(data) {
+			console.log(data);
+			document.getElementById("widget.cbid.squid.squid.countryName").value = data[0].country != undefined ? data[0].country : 'XX';
+			document.getElementById("widget.cbid.squid.squid.stateOrProvinceName").value = data[0].region != undefined ? data[0].region : 'Unspecified';
+			document.getElementById("widget.cbid.squid.squid.localityName").value = data[0].city != undefined ? data[0].city : 'Unspecified';
+		});
+	},
+
+	addFooter: function() {
+		return E('div', { 'class': 'cbi-page-actions' }, [
+			this.valid ?
+				E('button', {'class': 'cbi-button cbi-button-positive', 'click': L.ui.createHandlerFn(this, 'regenerate_cert')}, [ _('Regenerate Certificate'), ' ' ]) :
+				E('button', {'class': 'cbi-button cbi-button-positive', 'click': L.ui.createHandlerFn(this, 'generate_cert')}, [ _('Generate Certificate'), ' ' ]),
+			E('button', {'class': 'cbi-button cbi-button-negative', 'click': L.ui.createHandlerFn(this, 'populate')}, [ _('Populate Fields') ])
+		]);
 	}
 })
